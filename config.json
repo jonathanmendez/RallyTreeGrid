@@ -1,18 +1,18 @@
 {
-    "name": "TreeGrid",
-    "className": "CustomApp",
-    "server": "https://rally1.rallydev.com",
-    "sdk": "2.0p5",
-    "javascript": [
-        "RallyTreeProxy.js",
-        "RallyTreeModel.js",
-        "RallyTreeModelFactory.js",
-        "RallyTreeDataStore.js",
-        "RallyTreeGrid.js",
-        "ModifiedPercentDone.js",
-        "App.js"
-    ],
-    "css": [
-        "app.css"
-    ]
+   "name": "TreeGrid",
+   "className": "CustomApp",
+   "server": "https://rally1.rallydev.com",
+   "sdk": "2.0p5",
+   "javascript": [
+      "RallyTreeProxy.js",
+      "RallyTreeModel.js",
+      "RallyTreeModelFactory.js",
+      "RallyTreeDataStore.js",
+      "RallyTreeGrid.js",
+      "ModifiedPercentDone.js",
+      "App.js"
+   ],
+   "css": [
+      "app.css"
+   ]
 }

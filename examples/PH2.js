@@ -2,7 +2,7 @@
 
   Ext.override(Rally.env.Server, {
     getWsapiUrl: function(version) {
-      return this.getContextUrl() + "/webservice/1.39";
+      return this.getContextUrl() + "/webservice/1.43";
     }
   });
 
@@ -216,17 +216,16 @@
           load: function() { me.hideLoading(); }
         },
         columnCfgs: [
-          //{
-            //xtype: 'rallyrowactioncolumn',
-            //rowActions: [
-                //Rally.ui.menu.item.Edit.get()
-            //]
-          //},
           "Name",
           "Release",
           "Iteration",
           "ScheduleState",
-          "PlanEstimate",
+        //   "PlanEstimate",
+        {
+            text: 'PlanEstimate',
+            dataIndex: 'PlanEstimate',
+            flex: 1
+        },
           {
             text: 'Task Est.',
             dataIndex: 'Estimate',
