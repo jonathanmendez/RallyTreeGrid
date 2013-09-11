@@ -217,29 +217,10 @@
         },
         columnCfgs: [
           "Name",
+          "Priority",
+          "PreliminaryEstimate",
           "Release",
-          "Iteration",
-          "ScheduleState",
-        //   "PlanEstimate",
-        {
-            text: 'PlanEstimate',
-            dataIndex: 'PlanEstimate',
-            flex: 1
-        },
-          {
-            text: 'Task Est.',
-            dataIndex: 'Estimate',
-            renderer: Ext.bind(renderTask, me, ["TaskEstimateTotal"], 0),
-            //flex: 1,
-            hidden: true
-          },
-          {
-            text: 'To Do',
-            dataIndex: 'ToDo',
-            renderer: Ext.bind(renderTask, me, ["TaskRemainingTotal"], 0),
-            //flex: 1,
-            hidden: true
-          }, {
+           {
             xtype: 'templatecolumn',
             tpl: Ext.create('Rally.ui.renderer.template.PercentDoneByStoryPlanEstimateTemplate2'),
             text: '% Done By Plan Estimate',
@@ -253,27 +234,40 @@
             text: '% Done By Story Count',
             dataIndex: 'PercentDoneByStoryCount'
             //flex: 1
-          }, 
-          "PrelimenaryEstimate",
-          "PlannedStartDate",
-          "PlannedEndDate",
-          "ValueScore",
-          "RiskScore",
+          },
+          "AcceptedLeafStoryCount",
+          "LeafStoryCount",
+          "LeafStoryPlanEstimateTotal",
+            {
+                text: 'PlanEstimate',
+                dataIndex: 'PlanEstimate',
+                flex: 1
+            },
+          "ScheduleState",
           {
-            text: 'State',
-            renderer: function (value, metaData, record) {
-              //console.log("Renderer", arguments);
-              var type = record.data._type.toLowerCase();
-              var res = "";
-             
-              res = me._stateFields[type].renderTpl.apply(record.data);
-
-              //console.log(res);
-
-              return res;
-            }
-            //flex: 1
-          }
+            text: 'Task Est.',
+            dataIndex: 'Estimate',
+            renderer: Ext.bind(renderTask, me, ["TaskEstimateTotal"], 0),
+            //flex: 1,
+            hidden: true
+          },
+          {
+            text: 'To Do',
+            dataIndex: 'ToDo',
+            renderer: Ext.bind(renderTask, me, ["TaskRemainingTotal"], 0),
+            //flex: 1,
+            hidden: true
+          }, 
+            {
+                text: 'State',
+                renderer: function (value, metaData, record) {
+                    var type = record.data._type.toLowerCase();
+                    var res = "";
+                    res = me._stateFields[type].renderTpl.apply(record.data);
+                    return res;
+                }
+            },
+            "PlanEstimate"
         ]
 
       });
