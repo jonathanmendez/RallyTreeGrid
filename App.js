@@ -6,7 +6,31 @@
     }
   });
 
+  
+  var filterTags = [];
+  
   var defaultFilterFn = function () { return true; };
+  
+    var tagFilterFn = function (rec) { 
+        console.log("tag Filter Fn",rec);
+        if (rec.data._type.toLowerCase() === "portfolioitem/feature") {
+        //if (rec.data._type.toLowerCase() === "portfolioitem/epic") {
+            if ( filterTags.length > 0) {
+                for ( var x = 0 ; x < rec.data.Tags.length;x++) {
+                    for ( var y = 0 ; y < filterTags.length;y++) {
+                        if ( rec.data.Tags[x]._ref == filterTags[y]._ref )
+                            return true;
+                    }
+                }
+                return false;
+            } else {
+                return true;
+            }
+        } else {
+            return true;
+        }
+    };
+
 
   var renderTask = function renderTask(p, val, __, rec) {
     if (rec && rec.get) {
@@ -37,6 +61,7 @@
     loading: null,
 
     filterFn: defaultFilterFn,
+    // filterTags : [],
 
     launch: function() {
       var me = this;
@@ -63,6 +88,28 @@
                 xtype: 'tbspacer',
                 flex: 1
               },
+            {
+                xtype: 'rallymultiobjectpicker',
+                modelType: 'tag',
+                listeners : {
+                    collapse : function( field, eOpts ) {
+                        console.log("this",this);
+                        console.log("selected",field.getValue());
+                        var cb = this.down("#typecb");
+                        filterTags = field.getValue().length > 0 ?
+                            field.getValue() : [];
+                        this.filterFn = field.getValue().length > 0 ? 
+                            tagFilterFn : defaultFilterFn;
+                        this._applyFilter(cb);
+                    },
+                    scope : this
+                }
+            },
+              {
+                xtype: 'tbspacer',
+                flex: 1
+              },
+
               me._createTypeSelector(), {
                 xtype: 'tbspacer',
                 width: 10
@@ -85,7 +132,7 @@
     },
 
     _createTypeSelector: function _createViewSelector() {
-      var cb = Ext.create("Rally.ui.combobox.PortfolioItemTypeComboBox", {});
+      var cb = Ext.create("Rally.ui.combobox.PortfolioItemTypeComboBox", {itemId : "typecb"});
 
       cb.on("ready", function(value) { 
         //console.log("Loaded", arguments); 
@@ -178,7 +225,9 @@
             //console.log("Child models", childModels);
             me.store = Ext.create('Rally.data.WsapiTreeStore', {
               topLevelModels: [ newVal.TypePath.toLowerCase() ],
-              childModels: childModels
+              childModels: childModels,
+              // barry : filter function
+              filterFn: me.filterFn
             });
 
             me._onLoadData(newVal);
