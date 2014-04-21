@@ -13,8 +13,8 @@
   
     var tagFilterFn = function (rec) { 
         console.log("tag Filter Fn",rec);
-        if (rec.data._type.toLowerCase() === "portfolioitem/theme") {
-        //if (rec.data._type.toLowerCase() === "portfolioitem/feature") {
+        //if (rec.data._type.toLowerCase() === "portfolioitem/theme") {
+        if (rec.data._type.toLowerCase() === "portfolioitem/feature") {
         //if (rec.data._type.toLowerCase() === "portfolioitem/epic") {
             if ( filterTags.length > 0) {
                 for ( var x = 0 ; x < rec.data.Tags.length;x++) {
@@ -274,7 +274,7 @@
                 dataIndex : 'Release',
                 text: 'Release',
                 renderer: function (value, metaData, record) {
-                    return value != undefined && value != null ? value._refObjectName : null;                    
+                    return value !== undefined && value !== null ? value._refObjectName : null;                    
                 }
             },
            {
