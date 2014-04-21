@@ -10,9 +10,10 @@
   var filterTags = [];
   
   var defaultFilterFn = function () { return true; };
+  var defaultQuery = {property: 'ObjectID', operator: '!=', value: '0'};
   
     var tagFilterFn = function (rec) { 
-        console.log("tag Filter Fn",rec);
+        //console.log("tag Filter Fn",rec);
         //if (rec.data._type.toLowerCase() === "portfolioitem/theme") {
         if (rec.data._type.toLowerCase() === "portfolioitem/feature") {
         //if (rec.data._type.toLowerCase() === "portfolioitem/epic") {
@@ -64,6 +65,8 @@
     filterFn: defaultFilterFn,
     // filterTags : [],
 
+    _queryFilter: defaultQuery,
+
     launch: function() {
       var me = this;
 
@@ -89,13 +92,33 @@
                 xtype: 'tbspacer',
                 flex: 1
               },
-            {
+              {
+                // query string
+                xtype: 'textfield',
+                itemId: 'query-textbox',
+                fieldLabel: 'Query',
+                labelAlign: 'right'
+              },
+              {
+                // query trigger button
+                xtype: 'rallybutton',
+                text: 'Go',
+                handler: me._applyQueryFilter,
+                scope: me
+              },
+              {
+                xtype: 'tbspacer',
+                flex: 1
+              },
+              {
                 xtype: 'rallymultiobjectpicker',
+                fieldLabel: 'Tag',
+                labelAlign: 'right',
                 modelType: 'tag',
                 listeners : {
                     collapse : function( field, eOpts ) {
-                        console.log("this",this);
-                        console.log("selected",field.getValue());
+                        //console.log("this",this);
+                        //console.log("selected",field.getValue());
                         var cb = this.down("#typecb");
                         filterTags = field.getValue().length > 0 ?
                             field.getValue() : [];
@@ -105,18 +128,18 @@
                     },
                     scope : this
                 }
-            },
+              },
               {
                 xtype: 'tbspacer',
                 flex: 1
               },
-
-              me._createTypeSelector(), {
+              me._createTypeSelector(),
+              {
                 xtype: 'tbspacer',
                 width: 10
               }
             ]
-            }]
+        }]
       }));
     },
 
@@ -176,6 +199,34 @@
       return ssf;
     },
 
+    _applyQueryFilter: function() {
+      var me = this;
+      var queryString;
+      var parser;
+      var filter;
+      var cb;
+
+      queryString = me.down('#query-textbox').getValue();
+      if(queryString) {
+        parser = Ext.create('Rally.data.util.QueryStringParser', {
+          string: queryString
+        });
+        try {
+          filter = parser.parseExpression();
+        }
+        catch (err) {
+          alert(err.toString());
+          return;
+        }
+        //console.log('filter: ', filter.toString());
+        me._queryFilter = filter;
+      } else {
+        me._queryFilter = defaultQuery;
+      }
+      cb = me.down('#typecb');
+      me._applyFilter(cb);
+    },
+
     _applyFilter: function _applyFilter(sender, newVal, oldVal, eOpts) {
       var i, ii;
       var me = this;
@@ -227,6 +278,7 @@
             me.store = Ext.create('Rally.data.WsapiTreeStore', {
               topLevelModels: [ newVal.TypePath.toLowerCase() ],
               childModels: childModels,
+              query: me._queryFilter,
               // barry : filter function
               filterFn: me.filterFn
             });
