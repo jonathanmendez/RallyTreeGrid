@@ -97,7 +97,15 @@
                 xtype: 'textfield',
                 itemId: 'query-textbox',
                 fieldLabel: 'Query',
-                labelAlign: 'right'
+                labelAlign: 'right',
+                listeners: {
+                  scope: me,
+                  specialkey: function(field, e) {
+                    if (e.getKey() == e.ENTER) {
+                      me._applyQueryFilter();
+                    }
+                  }
+                }
               },
               {
                 // query trigger button
