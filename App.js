@@ -79,7 +79,7 @@
         layout: 'anchor',
         margin: '15 0 0 0',
         padding: '0 0 0 0',
-        height: 45,
+        height: 75,
         width: '100%',
         items: [
           {
@@ -94,10 +94,11 @@
               },
               {
                 // query string
-                xtype: 'textfield',
+                xtype: 'textareafield',
                 itemId: 'query-textbox',
                 fieldLabel: 'Query',
                 labelAlign: 'right',
+                width: 400,
                 listeners: {
                   scope: me,
                   specialkey: function(field, e) {
