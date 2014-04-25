@@ -8,8 +8,11 @@
 
     <script type="text/javascript">
         // I am keeping the extra , in there to simplify my code. If someone is actually using an old version of IE to make an app let me know.
+            Ext.Loader.setConfig({enabled: true});
         Rally.loadScripts(
                 [
+                      "FiltersFeature.js",
+                      "TreeFiltersFeature.js",
                       "QueryStringParser.js",
                       "RallyTreeProxy.js",
                       "RallyTreeModel.js",
@@ -20,6 +23,13 @@
                       "App.js",
                 ],
         function() {
+            Ext.Loader.setConfig({enabled: true});
+            Ext.Loader.setPath('Ext.ux', 'http://pds.amer.corp.natinst.com/rally/ext-4.1.1a/examples/ux');
+            Ext.require([
+              'Ext.ux.grid.FiltersFeature',
+              'Ext.ux.grid.filter.StringFilter'
+            ]);
+
             Rally.launchApp('CustomApp', {
                 name:"TreeGrid"
             });

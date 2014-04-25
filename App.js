@@ -306,8 +306,19 @@
       //console.log("Loading data", newVal);
       var appId = me.getAppId();
 
+      var treefilterscfg = {
+        ftype: 'treefilters',
+        autoReload: false,
+        local: true,
+        filters: [{
+          type: 'string',
+          dataIndex: 'Name'
+        }]
+      };
+
       me._treePanel = Ext.create('Rally.ui.tree.grid.Panel', {
         store: me.store,
+        features: [treefilterscfg],
         models: [me.model],
         stateful: true,
         stateId: 'portfoliodrilldown-treegrid-' + appId,
