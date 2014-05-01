@@ -74,6 +74,8 @@
 
       me.showLoading();
 
+      var appId = me.getAppId();
+
       me.add(Ext.create("Ext.Panel", {
         border: false,
         layout: 'anchor',
@@ -98,6 +100,8 @@
                 itemId: 'query-textbox',
                 fieldLabel: 'Query',
                 labelAlign: 'right',
+                stateful: true,
+                stateId: 'portfoliodrilldown-query-textbox-' + appId,
                 width: 400,
                 listeners: {
                   scope: me,
