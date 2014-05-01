@@ -221,11 +221,11 @@
       var querytextbox;
       var queryString;
       var parser;
-      var filter;
+      
+      var filter = defaultQuery;
+      var fieldStyle = 'color: black';
 
       querytextbox = me.down('#query-textbox');
-
-      querytextbox.setFieldStyle('color: black');
 
       queryString = Ext.String.trim(querytextbox.getValue());
       if(queryString) {
@@ -236,13 +236,11 @@
           filter = parser.parseExpression();
         }
         catch (err) {
-          querytextbox.setFieldStyle('color: red');
-          filter = defaultQuery;
+          fieldStyle = 'color: red';
         }
-        me._queryFilter = filter;
-      } else {
-        me._queryFilter = defaultQuery;
       }
+      me._queryFilter = filter;
+      querytextbox.setFieldStyle(fieldStyle);
     },
 
     _applyFilter: function _applyFilter(sender, newVal, oldVal, eOpts) {

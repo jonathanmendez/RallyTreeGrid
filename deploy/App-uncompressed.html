@@ -1353,7 +1353,6 @@
                 // query trigger button
                 xtype: 'rallybutton',
                 text: 'Go',
-                //handler: me._applyQueryFilter,
                 handler: function() {
                   var cb = me.down("#typecb");
                   me._applyFilter(cb);
@@ -1458,11 +1457,11 @@
       var querytextbox;
       var queryString;
       var parser;
-      var filter;
+      
+      var filter = defaultQuery;
+      var fieldStyle = 'color: black';
 
       querytextbox = me.down('#query-textbox');
-
-      querytextbox.setFieldStyle('color: black');
 
       queryString = Ext.String.trim(querytextbox.getValue());
       if(queryString) {
@@ -1473,16 +1472,11 @@
           filter = parser.parseExpression();
         }
         catch (err) {
-          //alert(err.toString());
-          querytextbox.setFieldStyle('color: red');
-          filter = defaultQuery;
-          //return;
+          fieldStyle = 'color: red';
         }
-        //console.log('filter: ', filter.toString());
-        me._queryFilter = filter;
-      } else {
-        me._queryFilter = defaultQuery;
       }
+      me._queryFilter = filter;
+      querytextbox.setFieldStyle(fieldStyle);
     },
 
     _applyFilter: function _applyFilter(sender, newVal, oldVal, eOpts) {
