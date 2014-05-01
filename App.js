@@ -107,7 +107,8 @@
                   scope: me,
                   specialkey: function(field, e) {
                     if (e.getKey() == e.ENTER) {
-                      me._applyQueryFilter();
+                      var cb = me.down("#typecb");
+                      me._applyFilter(cb);
                     }
                   }
                 }
@@ -116,7 +117,10 @@
                 // query trigger button
                 xtype: 'rallybutton',
                 text: 'Go',
-                handler: me._applyQueryFilter,
+                handler: function() {
+                  var cb = me.down("#typecb");
+                  me._applyFilter(cb);
+                },
                 scope: me
               },
               {
@@ -214,12 +218,16 @@
 
     _applyQueryFilter: function() {
       var me = this;
+      var querytextbox;
       var queryString;
       var parser;
       var filter;
-      var cb;
 
-      queryString = me.down('#query-textbox').getValue();
+      querytextbox = me.down('#query-textbox');
+
+      querytextbox.setFieldStyle('color: black');
+
+      queryString = Ext.String.trim(querytextbox.getValue());
       if(queryString) {
         parser = Ext.create('Rally.data.util.QueryStringParser', {
           string: queryString
@@ -228,21 +236,20 @@
           filter = parser.parseExpression();
         }
         catch (err) {
-          alert(err.toString());
-          return;
+          querytextbox.setFieldStyle('color: red');
+          filter = defaultQuery;
         }
-        //console.log('filter: ', filter.toString());
         me._queryFilter = filter;
       } else {
         me._queryFilter = defaultQuery;
       }
-      cb = me.down('#typecb');
-      me._applyFilter(cb);
     },
 
     _applyFilter: function _applyFilter(sender, newVal, oldVal, eOpts) {
       var i, ii;
       var me = this;
+
+      me._applyQueryFilter();
 
       this._types = [];
       this._childTypes = [];
